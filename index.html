@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2f5d50">
+<meta name="description" content="Daromad va xarajatlarni kuzatish, byudjet rejalash">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hamyon">
+<title>Hamyon — shaxsiy moliya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --card:#ffffff; --ink:#1c1d21; --muted:#6b6f76; --line:#e7e5df;
+  --accent:#2f5d50; --accent-soft:#e3ece8; --inc:#2e7d4f; --exp:#c2412d; --warn:#c98a12;
+  --radius:14px; --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#141517;--card:#1d1f22;--ink:#ececea;--muted:#9a9ea5;--line:#2c2f33;--accent:#7fb8a4;--accent-soft:#22302b;--inc:#5fbf86;--exp:#ec7a66;--warn:#e0aa45;--shadow:none}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1120px;margin:0 auto;padding:24px 20px 60px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-.01em}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--accent);display:grid;place-items:center;color:var(--card);font-weight:700}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,input,button,textarea{font:inherit;color:inherit}
+select,input[type=text],input[type=number],input[type=date],input[type=search]{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:38px}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;cursor:pointer;min-height:38px;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn.sm{padding:4px 10px;min-height:30px;font-size:13px}
+.status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.ok{background:var(--inc)} .dot.warn{background:var(--warn)}
+.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:18px;width:max-content;max-width:100%;overflow:auto}
+.tab{border:0;background:transparent;padding:8px 16px;border-radius:9px;cursor:pointer;color:var(--muted);font-weight:500;white-space:nowrap}
+.tab.on{background:var(--accent-soft);color:var(--accent)}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,1fr)}
+@media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.kpi .label{font-size:13px;color:var(--muted);margin-bottom:6px}
+.kpi .val{font-size:24px;font-weight:600;letter-spacing:-.02em}
+.kpi .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.two{grid-template-columns:1.4fr 1fr}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+h2{font-size:15px;margin:0 0 14px;font-weight:600}
+.row-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
+.row-h h2{margin:0}
+.inc{color:var(--inc)} .exp{color:var(--exp)}
+.tx{display:grid;grid-template-columns:36px 1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.tx:last-child{border-bottom:0}
+.ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:17px;background:var(--accent-soft)}
+.tx .t1{font-weight:500}
+.tx .t2{font-size:12px;color:var(--muted)}
+.tx .amt{font-weight:600;text-align:right}
+.tx .acts{display:flex;gap:2px;opacity:.55}
+.tx:hover .acts{opacity:1}
+.empty{color:var(--muted);text-align:center;padding:28px 10px;font-size:14px}
+.bar{height:8px;border-radius:6px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:6px;background:var(--accent)}
+.bud{padding:10px 0;border-bottom:1px solid var(--line)}
+.bud:last-child{border-bottom:0}
+.bud .top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px;gap:8px}
+.bud .top span:last-child{color:var(--muted);font-size:13px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filters input[type=search]{flex:1;min-width:160px}
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.scrim.on{display:flex}
+.modal{background:var(--card);border-radius:16px;padding:22px;width:100%;max-width:440px;border:1px solid var(--line)}
+.modal h3{margin:0 0 16px;font-size:17px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.field label{font-size:12px;color:var(--muted);font-weight:500}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-radius:10px;padding:3px;margin-bottom:14px}
+.seg button{border:0;background:transparent;padding:8px;border-radius:8px;cursor:pointer;font-weight:500;color:var(--muted)}
+.seg button.on.e{background:var(--card);color:var(--exp)}
+.seg button.on.i{background:var(--card);color:var(--inc)}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+.err{color:var(--exp);font-size:13px;min-height:18px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.2s;pointer-events:none;z-index:20}
+.toast.on{opacity:1}
+svg text{fill:var(--muted);font-size:11px;font-family:Inter,sans-serif}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.catrow{display:grid;grid-template-columns:120px 1fr 110px;gap:10px;align-items:center;font-size:13px;padding:6px 0}
+.catrow .bar{height:10px}
+.catrow .bar>i{background:var(--exp);opacity:.8}
+.hidden{display:none!important}
+.small{font-size:12px;color:var(--muted)}
+textarea{width:100%;min-height:140px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);font-family:"JetBrains Mono",monospace;font-size:12px}
+
+.grid>*{min-width:0}
+.mrow>*{min-width:0}
+.field input,.field select{width:100%;min-width:0}
+input[type=date]{-webkit-appearance:none;appearance:none}
+.ti{display:none}
+@media(max-width:640px){
+  body{font-size:15px}
+  .wrap{padding:14px 12px calc(96px + env(safe-area-inset-bottom))}
+  header{margin-bottom:14px}
+  .brand{font-size:18px;flex:1}
+  .controls{width:100%;justify-content:space-between}
+  #monthSel{flex:1;max-width:60%}
+  input,select,textarea{font-size:16px!important}
+  /* bottom tab bar */
+  .tabs{position:fixed;left:0;right:0;bottom:0;width:100%;margin:0;border-radius:0;border:0;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5;display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font-size:11px}
+  .ti{display:block;font-size:20px;line-height:1}
+  /* floating add button */
+  #addBtn{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:50%;padding:0;font-size:0;z-index:6;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+  #addBtn::before{content:"+";font-size:30px;line-height:1;font-weight:400}
+  .grid{gap:12px}
+  .card{padding:14px}
+  .kpi .val{font-size:17px}
+  .kpi .label{font-size:12px}
+  .kpi .sub{font-size:11px}
+  .tx{grid-template-columns:36px 1fr auto;gap:10px;cursor:pointer}
+  .tx .acts{display:none}
+  .tx .amt{font-size:14px}
+  .catrow{grid-template-columns:1fr auto;row-gap:4px}
+  .catrow .bar{grid-column:1/-1;order:3}
+  .bud .top{flex-wrap:wrap}
+  .bud .top>span:first-child{flex-basis:100%}
+  .bud .top>span:last-child{width:100%;justify-content:space-between}
+  .row-h{flex-wrap:wrap}
+  .scrim{align-items:flex-end;padding:0}
+  .modal{max-width:none;border-radius:18px 18px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+  .toast{bottom:calc(150px + env(safe-area-inset-bottom))}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><img src="icon-192.png" alt="" width="34" height="34" style="border-radius:9px">Hamyon</div>
+    <div class="controls">
+      <span class="status" id="status"><span class="dot"></span><span>Ulanmoqda…</span></span>
+      <select id="monthSel" aria-label="Oy"></select>
+      <button class="btn hidden" id="installBtn">⬇ O'rnatish</button>
+      <button class="btn primary" id="addBtn">+ Qo'shish</button>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab on" data-view="overview"><span class="ti">🏠</span>Umumiy</button>
+    <button class="tab" data-view="transactions"><span class="ti">📋</span>Tranzaksiyalar</button>
+    <button class="tab" data-view="budgets"><span class="ti">🎯</span>Byudjetlar</button>
+    <button class="tab" data-view="settings"><span class="ti">⚙️</span>Sozlamalar</button>
+  </nav>
+
+  <!-- OVERVIEW -->
+  <section id="view-overview">
+    <div class="grid kpis">
+      <div class="card kpi"><div class="label">Umumiy balans</div><div class="val num" id="kBal">–</div><div class="sub">Butun davr</div></div>
+      <div class="card kpi"><div class="label">Shu oydagi daromad</div><div class="val num inc" id="kInc">–</div><div class="sub" id="kIncSub"></div></div>
+      <div class="card kpi"><div class="label">Shu oydagi xarajat</div><div class="val num exp" id="kExp">–</div><div class="sub" id="kExpSub"></div></div>
+      <div class="card kpi"><div class="label">Shu oyda tejaldi</div><div class="val num" id="kSav">–</div><div class="sub" id="kSavSub"></div></div>
+    </div>
+    <div class="grid two" style="margin-top:16px">
+      <div class="card">
+        <h2>Daromad va xarajat — so'nggi 6 oy</h2>
+        <div id="trend"></div>
+        <div class="legend"><span><i style="background:var(--inc)"></i>Daromad</span><span><i style="background:var(--exp)"></i>Xarajat</span></div>
+      </div>
+      <div class="card">
+        <h2>Pul qayerga ketdi</h2>
+        <div id="cats"></div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top:16px">
+      <div class="card">
+        <div class="row-h"><h2>So'nggi tranzaksiyalar</h2><button class="btn sm ghost" data-goto="transactions">Barchasi →</button></div>
+        <div id="recent"></div>
+      </div>
+      <div class="card">
+        <div class="row-h"><h2>Shu oydagi byudjetlar</h2><button class="btn sm ghost" data-goto="budgets">Boshqarish →</button></div>
+        <div id="budMini"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSACTIONS -->
+  <section id="view-transactions" class="hidden">
+    <div class="card">
+      <div class="filters">
+        <input type="search" id="q" placeholder="Izoh yoki kategoriya bo'yicha qidirish…">
+        <select id="fType"><option value="">Barcha turlar</option><option value="expense">Xarajatlar</option><option value="income">Daromadlar</option></select>
+        <select id="fCat"><option value="">Barcha kategoriyalar</option></select>
+        <select id="fScope"><option value="month">Tanlangan oy</option><option value="all">Butun davr</option></select>
+      </div>
+      <div class="small" id="txSummary" style="margin-bottom:6px"></div>
+      <div id="txList"></div>
+    </div>
+  </section>
+
+  <!-- BUDGETS -->
+  <section id="view-budgets" class="hidden">
+    <div class="card">
+      <div class="row-h"><h2>Kategoriyalar bo'yicha oylik byudjet</h2><span class="small">Kuzatish uchun limit kiriting. Limitsiz bo'lsa, bo'sh qoldiring.</span></div>
+      <div id="budEdit"></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="view-settings" class="hidden">
+    <div class="grid two">
+      <div class="card">
+        <h2>Asosiy sozlamalar</h2>
+        <div class="field"><label for="curSel">Valyuta</label>
+          <select id="curSel">
+            <option value="UZS">UZS — O'zbek so'mi</option><option value="USD">USD — AQSh dollari</option><option value="EUR">EUR — Yevro</option>
+            <option value="RUB">RUB — Rossiya rubli</option><option value="KZT">KZT — Qozog'iston tengesi</option><option value="GBP">GBP — Britaniya funti</option>
+            <option value="TRY">TRY — Turk lirasi</option><option value="INR">INR — Hindiston rupiyasi</option><option value="AED">AED — BAA dirhami</option>
+          </select>
+        </div>
+        <div class="field"><label>Kategoriyalar</label>
+          <div id="catList" class="small"></div>
+          <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <input type="text" id="newCat" style="flex:1 1 180px;width:auto" placeholder="Yangi kategoriya (masalan, Uy hayvonlari)">
+            <select id="newCatType" style="flex:1 1 auto;width:auto"><option value="expense">Xarajat</option><option value="income">Daromad</option></select>
+            <button class="btn" id="addCat">Qo'shish</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Eksport</h2>
+        <p class="small" style="margin-top:0">Tranzaksiyalaringizni CSV ko'rinishida nusxalab, Excel yoki Google Sheets'ga joylashtiring.</p>
+        <button class="btn" id="copyCsv">CSV'ni nusxalash</button>
+        <textarea id="csvBox" readonly class="hidden" style="margin-top:10px"></textarea>
+        <h2 style="margin-top:22px">Zaxira nusxa</h2>
+        <p class="small" style="margin-top:0">Ma'lumotlar faqat shu telefonda saqlanadi. Ularni yo'qotmaslik uchun vaqti-vaqti bilan zaxira fayl yuklab oling. Yangi telefonda shu faylni tiklashingiz mumkin.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="bkDown">⬇ Zaxira faylni yuklab olish</button>
+          <label class="btn" style="display:inline-flex;align-items:center">⬆ Zaxiradan tiklash<input type="file" id="bkFile" accept=".json,application/json" hidden></label>
+        </div>
+        <h2 style="margin-top:22px">Boshidan boshlash</h2>
+        <p class="small" style="margin-top:0">Bu yerda saqlangan barcha tranzaksiya va byudjetlarni o'chirish.</p>
+        <button class="btn" id="wipe" style="color:var(--exp)">Barcha ma'lumotlarni o'chirish…</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Add/edit modal -->
+<div class="scrim" id="txModal">
+  <form class="modal" id="txForm" autocomplete="off">
+    <h3 id="txTitle">Tranzaksiya qo'shish</h3>
+    <div class="seg"><button type="button" class="e on" data-t="expense">Xarajat</button><button type="button" class="i" data-t="income">Daromad</button></div>
+    <div class="field"><label for="fAmt">Summa</label><input type="number" id="fAmt" inputmode="decimal" step="any" min="0" placeholder="0" required></div>
+    <div class="mrow">
+      <div class="field"><label for="fCatIn">Kategoriya</label><select id="fCatIn"></select></div>
+      <div class="field"><label for="fDate">Sana</label><input type="date" id="fDate" required></div>
+    </div>
+    <div class="field"><label for="fNote">Izoh (ixtiyoriy)</label><input type="text" id="fNote" placeholder="masalan, Korzinkadan oziq-ovqat"></div>
+    <div class="err" id="fErr"></div>
+    <div class="mfoot"><button type="button" class="btn ghost hidden" id="delTx" style="color:var(--exp);margin-right:auto">O'chirish</button><button type="button" class="btn ghost" id="cancelTx">Bekor qilish</button><button class="btn primary" type="submit">Saqlash</button></div>
+  </form>
+</div>
+
+<!-- Confirm modal -->
+<div class="scrim" id="confirmModal">
+  <div class="modal">
+    <h3 id="cTitle">Ishonchingiz komilmi?</h3>
+    <p class="small" id="cBody"></p>
+    <div class="mfoot"><button class="btn ghost" id="cNo">Bekor qilish</button><button class="btn primary" id="cYes" style="background:var(--exp);border-color:var(--exp)">O'chirish</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+/* ---------- defaults ---------- */
+const DEFAULT_CATS = [
+  {name:"Oziq-ovqat",icon:"🛒",type:"expense"},{name:"Kafe va restoranlar",icon:"🍽️",type:"expense"},
+  {name:"Transport",icon:"🚕",type:"expense"},{name:"Uy-joy va ijara",icon:"🏠",type:"expense"},
+  {name:"Kommunal xizmatlar",icon:"💡",type:"expense"},{name:"Telefon va internet",icon:"📱",type:"expense"},
+  {name:"Sog'liq",icon:"💊",type:"expense"},{name:"Xaridlar",icon:"🛍️",type:"expense"},
+  {name:"Ko'ngilochar",icon:"🎬",type:"expense"},{name:"Ta'lim",icon:"📚",type:"expense"},
+  {name:"Sovg'alar va oila",icon:"🎁",type:"expense"},{name:"Boshqa xarajat",icon:"•",type:"expense"},
+  {name:"Maosh",icon:"💼",type:"income"},{name:"Frilans",icon:"🧑‍💻",type:"income"},
+  {name:"Olingan sovg'alar",icon:"🎉",type:"income"},{name:"Boshqa daromad",icon:"＋",type:"income"}
+];
+// English names from the first version -> Uzbek
+const LEGACY = {"Food & groceries":"Oziq-ovqat","Eating out":"Kafe va restoranlar","Housing & rent":"Uy-joy va ijara","Utilities":"Kommunal xizmatlar","Phone & internet":"Telefon va internet","Health":"Sog'liq","Shopping":"Xaridlar","Entertainment":"Ko'ngilochar","Education":"Ta'lim","Gifts & family":"Sovg'alar va oila","Other expense":"Boshqa xarajat","Salary":"Maosh","Freelance":"Frilans","Gifts received":"Olingan sovg'alar","Other income":"Boshqa daromad"};
+const LOC = "uz-Latn";
+const TYPE_UZ = {expense:"xarajat", income:"daromad"};
+const settingsDefault = () => ({currency:"UZS", categories: DEFAULT_CATS.slice(), budgets:{}});
+
+/* ---------- state ---------- */
+let txs = [];               // {id,type,amount,category,date,note,created}
+let settings = settingsDefault();
+let store = null;           // db collection for this user, or null
+let mode = "loading";
+let view = "overview";
+let curMonth = ym(new Date());
+let editId = null, formType = "expense";
+
+/* ---------- helpers ---------- */
+function ym(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
+function todayStr(){ const d=new Date(); return ym(d)+"-"+String(d.getDate()).padStart(2,"0"); }
+const MONTHS=["Yanvar","Fevral","Mart","Aprel","May","Iyun","Iyul","Avgust","Sentabr","Oktabr","Noyabr","Dekabr"];
+const MONTHS_S=["Yan","Fev","Mar","Apr","May","Iyn","Iyl","Avg","Sen","Okt","Noy","Dek"];
+function monthLabel(k,short){ const [y,m]=k.split("-").map(Number); return short?MONTHS_S[m-1]:MONTHS[m-1]+" "+y; }
+function dayLabel(ds){ const [y,m,d]=ds.split("-").map(Number); return d+" "+MONTHS_S[m-1].toLowerCase(); }
+function uid(){ return "t"+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+const $ = s => document.querySelector(s);
+const CUR={UZS:["","so'm"],USD:["$",""],EUR:["€",""],RUB:["","₽"],KZT:["","₸"],GBP:["£",""],TRY:["₺",""],INR:["₹",""],AED:["","AED"]};
+function money(n, opts={}){
+  const c=settings.currency, noDec=["UZS","KZT"].includes(c), neg=n<0; let a=Math.abs(n), body;
+  if(opts.compact && a>=1000){ const u=a>=1e9?[1e9," mlrd"]:a>=1e6?[1e6," mln"]:[1e3," ming"]; body=(+(a/u[0]).toFixed(1)).toString().replace(".",",")+u[1]; }
+  else { const f=a.toFixed(noDec?0:2).split("."); body=f[0].replace(/\B(?=(\d{3})+(?!\d))/g,"\u00a0")+(f[1]&&f[1]!=="00"?","+f[1]:""); }
+  const [pre,suf]=CUR[c]||["",c];
+  return (neg?"−":"")+pre+body+(suf?"\u00a0"+suf:"");
+}
+function moneyIntl(n, opts={}){
+  const c = settings.currency;
+  const noDec = ["UZS","KZT","JPY"].includes(c);
+  let s;
+  try{ s = new Intl.NumberFormat(LOC,{style:"currency",currency:c,maximumFractionDigits:noDec?0:2,minimumFractionDigits:noDec?0:(opts.compact?0:2),notation:opts.compact?"compact":"standard"}).format(n); }
+  catch(e){ s = n.toFixed(noDec?0:2)+" "+c; }
+  return s;
+}
+function esc(s){ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function catInfo(name){ return settings.categories.find(c=>c.name===name) || {name, icon:"•", type:"expense"}; }
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("on"),2200); }
+function setStatus(kind,text){ $("#status").innerHTML=`<span class="dot ${kind}"></span><span>${esc(text)}</span>`; }
+
+/* ---------- storage ---------- */
+function snapDocs(snap){ if(!snap) return []; if(Array.isArray(snap)) return snap; if(Array.isArray(snap.docs)) return snap.docs; if(typeof snap.forEach==="function"){const a=[];snap.forEach(d=>a.push(d));return a;} return []; }
+function docData(d){ return typeof d?.data==="function" ? d.data() : (d?.data ?? d); }
+
+function applyDocs(list){
+  const t=[]; let s=null;
+  for(const d of list){
+    const v = docData(d); if(!v) continue;
+    const id = d.id ?? v.id;
+    if(id==="settings" || v.kind==="settings") s=v;
+    else if(v.kind==="tx") t.push({...v, id:v.id||id, category:LEGACY[v.category]||v.category});
+  }
+  txs = t;
+  if(s){
+    const cats=(s.categories&&s.categories.length?s.categories:DEFAULT_CATS.slice()).map(c=>({...c,name:LEGACY[c.name]||c.name}));
+    const buds={}; Object.entries(s.budgets||{}).forEach(([k,v])=>buds[LEGACY[k]||k]=v);
+    settings = {...settingsDefault(), ...s, categories:cats, budgets:buds};
+  }
+  render();
+}
+
+// local fallback (preview or signed out): this browser only
+const LKEY="pocket-ledger-v1";
+function localLoad(){ try{ const raw=localStorage.getItem(LKEY); if(raw){ const o=JSON.parse(raw); txs=(o.txs||[]).map(t=>({...t,category:LEGACY[t.category]||t.category})); settings={...settingsDefault(),...(o.settings||{})}; settings.categories=settings.categories.map(c=>({...c,name:LEGACY[c.name]||c.name})); } }catch(e){} }
+function localSave(){ try{ localStorage.setItem(LKEY, JSON.stringify({txs,settings})); }catch(e){} }
+
+async function saveTx(tx){
+  if(store){ try{ await store.doc(tx.id).set({...tx, kind:"tx"}); }catch(e){ toast("Saqlab bo'lmadi — internetni tekshiring"); throw e; } }
+  else { const i=txs.findIndex(x=>x.id===tx.id); if(i>=0) txs[i]=tx; else txs.push(tx); localSave(); render(); }
+}
+async function deleteTx(id){
+  if(store){ try{ await store.doc(id).delete(); }catch(e){ toast("O'chirib bo'lmadi"); } }
+  else { txs=txs.filter(x=>x.id!==id); localSave(); render(); }
+}
+let settingsTimer=null;
+function saveSettings(){
+  render();
+  if(store){ clearTimeout(settingsTimer); settingsTimer=setTimeout(async()=>{ try{ await store.doc("settings").set({...settings, kind:"settings"}); }catch(e){ toast("Sozlamalarni saqlab bo'lmadi"); } },400); }
+  else localSave();
+}
+
+async function connect(){
+  const timer = setTimeout(()=>{ if(mode==="loading"){ fallback("Telefoningizda saqlanadi"); } },10000);
+  try{
+    const [db, user] = await Promise.all([window.claude?.use?.("db") ?? null, window.claude?.use?.("user") ?? null]);
+    if(!db || !user){ clearTimeout(timer); return fallback("Telefoningizda saqlanadi"); }
+    const id = await user.id();
+    if(!id){ clearTimeout(timer); return fallback("Sinxronlash uchun tizimga kiring"); }
+    store = db.collection("data/users/"+id);
+    let first = true;
+    store.onSnapshot(snap=>{
+      if(first){ first=false; clearTimeout(timer); mode="db"; setStatus("ok","Hisobingizga sinxronlangan"); }
+      applyDocs(snapDocs(snap));
+    }, err=>{ clearTimeout(timer); store=null; fallback("Sinxronlash ishlamayapti — shu brauzerda saqlanadi"); });
+  }catch(e){ clearTimeout(timer); fallback("Telefoningizda saqlanadi"); }
+}
+function fallback(msg){ if(mode!=="loading" && mode!=="db") return; store=null; mode="local"; localLoad(); setStatus("ok",msg); render(); }
+
+/* ---------- derived ---------- */
+const inMonth = (t,k)=>t.date && t.date.slice(0,7)===k;
+function sums(list){ let i=0,e=0; for(const t of list){ if(t.type==="income") i+=+t.amount; else e+=+t.amount; } return {i,e}; }
+function monthsBack(k,n){ const [y,m]=k.split("-").map(Number); const out=[]; for(let j=n-1;j>=0;j--){ out.push(ym(new Date(y,m-1-j,1))); } return out; }
+
+/* ---------- render ---------- */
+function render(){
+  renderMonthSel();
+  const monthTx = txs.filter(t=>inMonth(t,curMonth));
+  const all = sums(txs), mon = sums(monthTx);
+  const prevK = monthsBack(curMonth,2)[0], prev = sums(txs.filter(t=>inMonth(t,prevK)));
+  $("#kBal").textContent = money(all.i-all.e);
+  $("#kBal").className = "val num "+(all.i-all.e<0?"exp":"");
+  $("#kInc").textContent = money(mon.i);
+  $("#kExp").textContent = money(mon.e);
+  const sav = mon.i-mon.e;
+  $("#kSav").textContent = money(sav);
+  $("#kSav").className = "val num "+(sav<0?"exp":"inc");
+  $("#kSavSub").textContent = mon.i>0 ? `daromadning ${Math.round(sav/mon.i*100)}%i` : "Daromad kiritilmagan";
+  $("#kIncSub").textContent = delta(mon.i,prev.i,monthLabel(prevK,true)+" oyiga nisbatan");
+  $("#kExpSub").textContent = delta(mon.e,prev.e,monthLabel(prevK,true)+" oyiga nisbatan");
+  renderTrend(); renderCats(monthTx); renderRecent(); renderBudgets(monthTx); renderTxList(); renderBudgetEditor(monthTx); renderSettings();
+}
+function delta(a,b,suffix){ if(!b) return a?"Ma'lumotli birinchi oy":"Hozircha yo'q"; const p=Math.round((a-b)/b*100); return (p>0?"▲ ":p<0?"▼ ":"")+Math.abs(p)+"% "+suffix; }
+
+function renderMonthSel(){
+  const sel=$("#monthSel"); const keys=new Set([ym(new Date()), curMonth, ...txs.map(t=>t.date?.slice(0,7)).filter(Boolean)]);
+  const sorted=[...keys].sort().reverse();
+  const html = sorted.map(k=>`<option value="${k}" ${k===curMonth?"selected":""}>${monthLabel(k)}</option>`).join("");
+  if(sel.innerHTML!==html) sel.innerHTML=html;
+}
+
+function renderTrend(){
+  const ks = monthsBack(curMonth,6);
+  const data = ks.map(k=>sums(txs.filter(t=>inMonth(t,k))));
+  const max = Math.max(1,...data.map(d=>Math.max(d.i,d.e)));
+  const W=560,H=210,pl=8,pb=22,pt=20; const cw=(W-pl*2)/ks.length; const bw=Math.min(22,cw/3.2);
+  let g="";
+  for(let j=0;j<=3;j++){ const y=pt+(H-pt-pb)*(j/3); g+=`<line x1="${pl}" x2="${W-pl}" y1="${y}" y2="${y}" stroke="var(--line)"/>`; }
+  ks.forEach((k,idx)=>{
+    const cx=pl+cw*idx+cw/2, d=data[idx], h=H-pt-pb;
+    const hi=d.i/max*h, he=d.e/max*h;
+    g+=`<rect x="${cx-bw-1}" y="${pt+h-hi}" width="${bw}" height="${Math.max(hi,0)}" rx="4" fill="var(--inc)"><title>${monthLabel(k)} daromad: ${money(d.i)}</title></rect>`;
+    g+=`<rect x="${cx+1}" y="${pt+h-he}" width="${bw}" height="${Math.max(he,0)}" rx="4" fill="var(--exp)"><title>${monthLabel(k)} xarajat: ${money(d.e)}</title></rect>`;
+    g+=`<text x="${cx}" y="${H-6}" text-anchor="middle" ${k===curMonth?'style="font-weight:600;fill:var(--ink)"':""}>${monthLabel(k,true)}</text>`;
+  });
+  g+=`<text x="${pl}" y="${pt-1}" text-anchor="start">maks. ${esc(money(max,{compact:true}))}</text>`;
+  $("#trend").innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Daromad va xarajat, so'nggi olti oy">${g}</svg>`;
+}
+
+function renderCats(monthTx){
+  const by={}; monthTx.filter(t=>t.type==="expense").forEach(t=>by[t.category]=(by[t.category]||0)+ +t.amount);
+  const rows=Object.entries(by).sort((a,b)=>b[1]-a[1]);
+  if(!rows.length){ $("#cats").innerHTML=`<div class="empty">Bu oyda xarajat kiritilmagan.</div>`; return; }
+  const total=rows.reduce((s,r)=>s+r[1],0), max=rows[0][1];
+  $("#cats").innerHTML = rows.slice(0,8).map(([c,v])=>`<div class="catrow"><span>${catInfo(c).icon} ${esc(c)}</span><div class="bar"><i style="width:${v/max*100}%"></i></div><span class="num" style="text-align:right">${money(v)} <span class="small">${Math.round(v/total*100)}%</span></span></div>`).join("");
+}
+
+function txRow(t){
+  const c=catInfo(t.category); const sign=t.type==="income"?"+":"−";
+  const d=dayLabel(t.date);
+  return `<div class="tx" data-row="${t.id}"><div class="ico">${c.icon}</div><div><div class="t1">${esc(t.note||t.category)}</div><div class="t2">${esc(t.category)} · ${d}</div></div>
+  <div class="amt num ${t.type==="income"?"inc":"exp"}">${sign}${money(+t.amount)}</div>
+  <div class="acts"><button class="btn sm ghost" data-edit="${t.id}" aria-label="Tahrirlash">✎</button><button class="btn sm ghost" data-del="${t.id}" aria-label="O'chirish">✕</button></div></div>`;
+}
+const byDate=(a,b)=>(b.date||"").localeCompare(a.date||"")||(b.created||0)-(a.created||0);
+
+function renderRecent(){
+  const list=txs.slice().sort(byDate).slice(0,6);
+  $("#recent").innerHTML = list.length ? list.map(txRow).join("") : `<div class="empty">Hozircha tranzaksiyalar yo'q.<br><br><button class="btn primary" data-add>Birinchisini qo'shing</button></div>`;
+}
+
+function budgetRows(monthTx){
+  const spent={}; monthTx.filter(t=>t.type==="expense").forEach(t=>spent[t.category]=(spent[t.category]||0)+ +t.amount);
+  return Object.entries(settings.budgets).filter(([,v])=>+v>0).map(([c,lim])=>({c,lim:+lim,s:spent[c]||0}));
+}
+function budRow(r){
+  const p=r.s/r.lim; const col=p>1?"var(--exp)":p>.8?"var(--warn)":"var(--accent)";
+  const left=r.lim-r.s;
+  return `<div class="bud"><div class="top"><span>${catInfo(r.c).icon} ${esc(r.c)}</span><span class="num">${money(r.s)} / ${money(r.lim)}</span></div>
+  <div class="bar"><i style="width:${Math.min(p,1)*100}%;background:${col}"></i></div>
+  <div class="small" style="margin-top:4px;color:${p>1?"var(--exp)":"var(--muted)"}">${left>=0?money(left)+" qoldi":money(-left)+" byudjetdan oshdi"}</div></div>`;
+}
+function renderBudgets(monthTx){
+  const rows=budgetRows(monthTx);
+  $("#budMini").innerHTML = rows.length ? rows.sort((a,b)=>b.s/b.lim-a.s/a.lim).slice(0,5).map(budRow).join("") : `<div class="empty">Byudjet belgilanmagan.<br><br><button class="btn" data-goto="budgets">Byudjet belgilash</button></div>`;
+}
+
+function renderBudgetEditor(monthTx){
+  const spent={}; monthTx.filter(t=>t.type==="expense").forEach(t=>spent[t.category]=(spent[t.category]||0)+ +t.amount);
+  const cats=settings.categories.filter(c=>c.type==="expense");
+  const box=$("#budEdit");
+  if(box.contains(document.activeElement)) return; // don't clobber while typing
+  box.innerHTML = cats.map(c=>{
+    const lim=+settings.budgets[c.name]||0, s=spent[c.name]||0, p=lim?s/lim:0;
+    const col=p>1?"var(--exp)":p>.8?"var(--warn)":"var(--accent)";
+    return `<div class="bud"><div class="top" style="align-items:center"><span>${c.icon} ${esc(c.name)}</span>
+      <span style="display:flex;gap:8px;align-items:center"><span class="num small">sarflandi: ${money(s)} /</span>
+      <input type="number" min="0" step="any" class="num" data-bud="${esc(c.name)}" value="${lim||""}" placeholder="limitsiz" style="width:130px"></span></div>
+      ${lim?`<div class="bar"><i style="width:${Math.min(p,1)*100}%;background:${col}"></i></div>`:""}</div>`;
+  }).join("");
+}
+
+function renderTxList(){
+  const q=$("#q").value.trim().toLowerCase(), ft=$("#fType").value, fc=$("#fCat").value, sc=$("#fScope").value;
+  const catSel=$("#fCat"); const opts=`<option value="">Barcha kategoriyalar</option>`+settings.categories.map(c=>`<option ${c.name===fc?"selected":""}>${esc(c.name)}</option>`).join("");
+  if(catSel.innerHTML!==opts) catSel.innerHTML=opts;
+  let list=txs.filter(t=>(sc==="all"||inMonth(t,curMonth)) && (!ft||t.type===ft) && (!fc||t.category===fc) && (!q||(t.note||"").toLowerCase().includes(q)||(t.category||"").toLowerCase().includes(q)));
+  list.sort(byDate);
+  const s=sums(list);
+  $("#txSummary").innerHTML = `${list.length} ta tranzaksiya · <span class="inc">+${money(s.i)}</span> · <span class="exp">−${money(s.e)}</span>`;
+  $("#txList").innerHTML = list.length ? list.map(txRow).join("") : `<div class="empty">Hech narsa topilmadi.</div>`;
+}
+
+function renderSettings(){
+  $("#curSel").value=settings.currency;
+  $("#catList").innerHTML = settings.categories.map((c,i)=>`<span style="display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:3px 4px 3px 10px;margin:0 6px 6px 0">${c.icon} ${esc(c.name)} <span class="small">(${TYPE_UZ[c.type]||c.type})</span><button class="btn sm ghost" data-rmcat="${i}" aria-label="O'chirish: ${esc(c.name)}" style="min-height:22px;padding:0 6px">✕</button></span>`).join("");
+}
+
+/* ---------- modal ---------- */
+function setFormType(t){
+  formType=t;
+  document.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+  const sel=$("#fCatIn"), cur=sel.value;
+  sel.innerHTML=settings.categories.filter(c=>c.type===t).map(c=>`<option>${esc(c.name)}</option>`).join("");
+  if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
+}
+function openTx(t){
+  editId=t?.id||null;
+  $("#txTitle").textContent=t?"Tranzaksiyani tahrirlash":"Tranzaksiya qo'shish";
+  setFormType(t?.type||"expense");
+  $("#fAmt").value=t?.amount??""; $("#fDate").value=t?.date||(curMonth===ym(new Date())?todayStr():curMonth+"-01");
+  $("#fNote").value=t?.note||""; if(t) $("#fCatIn").value=t.category;
+  $("#fErr").textContent="";
+  $("#delTx").classList.toggle("hidden",!t);
+  $("#txModal").classList.add("on"); setTimeout(()=>$("#fAmt").focus(),30);
+}
+function closeTx(){ $("#txModal").classList.remove("on"); }
+let confirmCb=null;
+function confirmBox(title,body,cb){ $("#cTitle").textContent=title; $("#cBody").textContent=body; confirmCb=cb; $("#confirmModal").classList.add("on"); }
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");
+  if(!b){ const r=e.target.closest("[data-row]"); if(r) openTx(txs.find(t=>t.id===r.dataset.row)); return; }
+  if(b.matches(".tab")) return go(b.dataset.view);
+  if(b.dataset.goto) return go(b.dataset.goto);
+  if(b.hasAttribute("data-add")||b.id==="addBtn") return openTx();
+  if(b.dataset.edit) return openTx(txs.find(t=>t.id===b.dataset.edit));
+  if(b.dataset.del){ const t=txs.find(x=>x.id===b.dataset.del); return confirmBox("Bu tranzaksiya o'chirilsinmi?",`${t.note||t.category} — ${money(+t.amount)}`,()=>{deleteTx(t.id);toast("O'chirildi");}); }
+  if(b.dataset.t) return setFormType(b.dataset.t);
+  if(b.dataset.rmcat!==undefined){ const c=settings.categories[+b.dataset.rmcat]; settings.categories.splice(+b.dataset.rmcat,1); delete settings.budgets[c.name]; saveSettings(); return; }
+});
+function go(v){ view=v; document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.view===v)); ["overview","transactions","budgets","settings"].forEach(k=>$("#view-"+k).classList.toggle("hidden",k!==v)); window.scrollTo({top:0}); }
+$("#cancelTx").onclick=closeTx;
+$("#delTx").onclick=()=>{ const t=txs.find(x=>x.id===editId); if(!t) return; closeTx(); confirmBox("Bu tranzaksiya o'chirilsinmi?",`${t.note||t.category} — ${money(+t.amount)}`,()=>{deleteTx(t.id);toast("O'chirildi");}); };
+$("#txModal").addEventListener("click",e=>{ if(e.target.id==="txModal") closeTx(); });
+$("#cNo").onclick=()=>$("#confirmModal").classList.remove("on");
+$("#cYes").onclick=()=>{ $("#confirmModal").classList.remove("on"); confirmCb&&confirmCb(); };
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ closeTx(); $("#confirmModal").classList.remove("on"); } });
+
+$("#txForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const amt=parseFloat($("#fAmt").value);
+  if(!(amt>0)) return $("#fErr").textContent="Noldan katta summa kiriting.";
+  if(!$("#fDate").value) return $("#fErr").textContent="Sanani tanlang.";
+  if(!$("#fCatIn").value) return $("#fErr").textContent="Avval Sozlamalarda bu tur uchun kategoriya qo'shing.";
+  const old=editId?txs.find(t=>t.id===editId):null;
+  const tx={id:editId||uid(),type:formType,amount:Math.round(amt*100)/100,category:$("#fCatIn").value,date:$("#fDate").value,note:$("#fNote").value.trim().slice(0,120),created:old?.created||Date.now()};
+  closeTx();
+  try{ await saveTx(tx); toast(editId?"Yangilandi":"Saqlandi"); }catch(_){}
+  if(tx.date.slice(0,7)!==curMonth){ curMonth=tx.date.slice(0,7); render(); }
+});
+
+$("#monthSel").onchange=e=>{ curMonth=e.target.value; render(); };
+["#q","#fType","#fCat","#fScope"].forEach(s=>$(s).addEventListener("input",renderTxList));
+$("#budEdit").addEventListener("change",e=>{
+  const i=e.target.closest("[data-bud]"); if(!i) return;
+  const v=parseFloat(i.value); if(v>0) settings.budgets[i.dataset.bud]=v; else delete settings.budgets[i.dataset.bud];
+  i.blur(); saveSettings(); toast("Byudjet saqlandi");
+});
+$("#curSel").onchange=e=>{ settings.currency=e.target.value; saveSettings(); };
+$("#addCat").onclick=()=>{
+  const n=$("#newCat").value.trim(); if(!n) return;
+  if(settings.categories.some(c=>c.name.toLowerCase()===n.toLowerCase())) return toast("Bu kategoriya allaqachon bor");
+  settings.categories.push({name:n.slice(0,40),icon:"•",type:$("#newCatType").value}); $("#newCat").value=""; saveSettings(); toast("Kategoriya qo'shildi");
+};
+$("#copyCsv").onclick=async()=>{
+  const rows=[["Sana","Tur","Kategoriya","Summa","Valyuta","Izoh"],...txs.slice().sort(byDate).map(t=>[t.date,TYPE_UZ[t.type]||t.type,t.category,t.amount,settings.currency,t.note||""])];
+  const csv=rows.map(r=>r.map(v=>{v=String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(",")).join("\n");
+  const box=$("#csvBox"); box.value=csv; box.classList.remove("hidden");
+  try{ await navigator.clipboard.writeText(csv); toast("CSV nusxalandi"); }catch(e){ box.select(); toast("Quyidagi matnni belgilab, nusxalang"); }
+};
+$("#wipe").onclick=()=>confirmBox("Barcha ma'lumotlar o'chirilsinmi?","Barcha tranzaksiyalar, byudjetlar va qo'shilgan kategoriyalar o'chiriladi. Buni qaytarib bo'lmaydi.",async()=>{
+  if(store){ for(const t of txs.slice()){ try{ await store.doc(t.id).delete(); }catch(e){} } settings=settingsDefault(); saveSettings(); }
+  else { txs=[]; settings=settingsDefault(); localSave(); render(); }
+  toast("Barcha ma'lumotlar o'chirildi");
+});
+
+/* ---------- backup ---------- */
+$("#bkDown").onclick=()=>{
+  const blob=new Blob([JSON.stringify({app:"hamyon",version:1,exported:new Date().toISOString(),txs,settings},null,1)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="hamyon-zaxira-"+todayStr()+".json";
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  toast("Zaxira fayl yuklab olindi");
+};
+$("#bkFile").onchange=async e=>{
+  const f=e.target.files[0]; e.target.value=""; if(!f) return;
+  let o; try{ o=JSON.parse(await f.text()); }catch(_){ return toast("Fayl o'qilmadi"); }
+  if(!o||!Array.isArray(o.txs)) return toast("Bu Hamyon zaxira fayli emas");
+  confirmBox("Zaxiradan tiklansinmi?",`${o.txs.length} ta tranzaksiya tiklanadi. Hozirgi ma'lumotlar almashtiriladi.`,()=>{
+    txs=o.txs.filter(t=>t&&t.id&&t.date&&+t.amount>0);
+    settings={...settingsDefault(),...(o.settings||{})};
+    localSave(); render(); toast("Ma'lumotlar tiklandi");
+  });
+  $("#cYes").textContent="Tiklash";
+};
+$("#cNo").addEventListener("click",()=>$("#cYes").textContent="O'chirish");
+$("#cYes").addEventListener("click",()=>setTimeout(()=>$("#cYes").textContent="O'chirish",0));
+
+/* ---------- install as app ---------- */
+let installEvt=null;
+window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); installEvt=e; $("#installBtn").classList.remove("hidden"); });
+window.addEventListener("appinstalled",()=>{ installEvt=null; $("#installBtn").classList.add("hidden"); toast("Ilova o'rnatildi"); });
+$("#installBtn").onclick=async()=>{ if(!installEvt) return; installEvt.prompt(); try{ await installEvt.userChoice; }catch(_){} installEvt=null; $("#installBtn").classList.add("hidden"); };
+if("serviceWorker" in navigator){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }
+try{ navigator.storage&&navigator.storage.persist&&navigator.storage.persist(); }catch(_){}
+
+render();
+connect();
+})();
+</script>
+</body>
+</html>
