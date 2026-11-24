@@ -207,7 +207,7 @@ input[type=date]{-webkit-appearance:none;appearance:none}
     <button class="tab on" data-view="overview"><span class="ti">🏠</span>Umumiy</button>
     <button class="tab" data-view="transactions"><span class="ti">📋</span>Tarix</button>
     <button class="tab" data-view="budgets"><span class="ti">🎯</span>Byudjet</button>
-    <button class="tab" data-view="savings"><span class="ti">🐷</span>Jamg'arma</button>
+    <button class="tab" data-view="savings"><span class="ti">💰</span>Jamg'arma</button>
     <button class="tab" data-view="debts"><span class="ti">🤝</span>Qarzlar</button>
   </nav>
 
@@ -242,7 +242,7 @@ input[type=date]{-webkit-appearance:none;appearance:none}
     </div>
     <div class="grid two" style="margin-top:16px">
       <div class="card">
-        <div class="row-h"><h2>🐷 Jamg'arma maqsadlari</h2><button class="btn sm ghost" data-goto="savings">Barchasi →</button></div>
+        <div class="row-h"><h2>💰 Jamg'arma maqsadlari</h2><button class="btn sm ghost" data-goto="savings">Barchasi →</button></div>
         <div id="goalMini"></div>
       </div>
       <div class="card">
@@ -657,7 +657,7 @@ function goalForm(g){
     else {
       const ng={id:uid(),name:v.name.slice(0,60),icon:v.icon,target:r2(v.target),deadline:v.deadline,deps:[],created:Date.now()};
       if(v.start>0) ng.deps.push({id:uid(),amount:r2(v.start),date:todayStr(),note:"Boshlang'ich summa",fromBal:false,created:Date.now()});
-      settings.goals.push(ng); toast("Maqsad qo'shildi 🐷");
+      settings.goals.push(ng); toast("Maqsad qo'shildi 💰");
     }
   }, g?()=>confirmBox("Bu maqsad o'chirilsinmi?",`${g.name} — yig'ilgan ${money(goalSaved(g))}. Hamyon balansidan olingan pullar balansga qaytadi.`,()=>{ settings.goals=settings.goals.filter(x=>x.id!==g.id); saveSettings(); toast("O'chirildi"); }):null);
 }
