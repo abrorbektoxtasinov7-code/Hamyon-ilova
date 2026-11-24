@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#2f5d50">
+<meta name="theme-color" content="#05070c">
 <meta name="description" content="Daromad va xarajatlarni kuzatish, byudjet rejalash">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -16,15 +16,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f5f1; --card:#ffffff; --ink:#1c1d21; --muted:#6b6f76; --line:#e7e5df;
-  --accent:#2f5d50; --accent-soft:#e3ece8; --inc:#2e7d4f; --exp:#c2412d; --warn:#c98a12;
-  --radius:14px; --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+  --bg:#05070c; --card:#0b1222; --card2:#111b31; --ink:#e8edf7; --muted:#8692ab; --line:#1c2a47; --line2:#26385e;
+  --navy:#1e3a8a; --navy2:#2848a8; --accent:#5b8cff; --accent-soft:rgba(91,140,255,.14);
+  --inc:#4fd1a1; --exp:#ff6b7a; --warn:#f5b84a;
+  --radius:16px; --shadow:none;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme:dark){
-  :root{--bg:#141517;--card:#1d1f22;--ink:#ececea;--muted:#9a9ea5;--line:#2c2f33;--accent:#7fb8a4;--accent-soft:#22302b;--inc:#5fbf86;--exp:#ec7a66;--warn:#e0aa45;--shadow:none}
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:radial-gradient(120% 60% at 50% -10%,#0d1d45 0%,var(--bg) 60%) fixed,var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
 .num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
 .wrap{max-width:1120px;margin:0 auto;padding:24px 20px 60px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
@@ -32,23 +31,25 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;fl
 .logo{width:34px;height:34px;border-radius:10px;background:var(--accent);display:grid;place-items:center;color:var(--card);font-weight:700}
 .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 select,input,button,textarea{font:inherit;color:inherit}
-select,input[type=text],input[type=number],input[type=date],input[type=search]{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:38px}
-input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
-.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;cursor:pointer;min-height:38px;font-weight:500}
-.btn:hover{border-color:var(--muted)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--card)}
+select,input[type=text],input[type=number],input[type=date],input[type=search]{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:9px 12px;min-height:42px}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) hue-rotate(190deg) saturate(4)}
+.btn{border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:8px 14px;cursor:pointer;min-height:40px;font-weight:500}
+.btn:hover{border-color:var(--line2)}
+.btn.primary{background:linear-gradient(180deg,var(--navy2),var(--navy));border-color:#3a5bc0;color:#fff;font-weight:600;box-shadow:0 4px 14px rgba(30,58,138,.4)}
+.iconbtn{width:42px;padding:0;display:inline-grid;place-items:center;font-size:18px}
 .btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
 .btn.sm{padding:4px 10px;min-height:30px;font-size:13px}
 .status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
 .dot.ok{background:var(--inc)} .dot.warn{background:var(--warn)}
-.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:18px;width:max-content;max-width:100%;overflow:auto}
-.tab{border:0;background:transparent;padding:8px 16px;border-radius:9px;cursor:pointer;color:var(--muted);font-weight:500;white-space:nowrap}
-.tab.on{background:var(--accent-soft);color:var(--accent)}
+.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:18px;width:max-content;max-width:100%;overflow:auto}
+.tab{border:0;background:transparent;padding:8px 16px;border-radius:10px;cursor:pointer;color:var(--muted);font-weight:500;white-space:nowrap}
+.tab.on{background:var(--navy);color:#fff;box-shadow:0 4px 14px rgba(30,58,138,.45)}
 .grid{display:grid;gap:16px}
 .kpis{grid-template-columns:repeat(4,1fr)}
 @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.card{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--radius);padding:18px}
 .kpi .label{font-size:13px;color:var(--muted);margin-bottom:6px}
 .kpi .val{font-size:24px;font-weight:600;letter-spacing:-.02em}
 .kpi .sub{font-size:12px;color:var(--muted);margin-top:4px}
@@ -76,20 +77,65 @@ h2{font-size:15px;margin:0 0 14px;font-weight:600}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .filters input[type=search]{flex:1;min-width:160px}
 /* modal */
-.scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.scrim{position:fixed;inset:0;background:rgba(0,2,8,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
 .scrim.on{display:flex}
-.modal{background:var(--card);border-radius:16px;padding:22px;width:100%;max-width:440px;border:1px solid var(--line)}
+.modal{background:linear-gradient(180deg,#0e1830,#0a1122);border-radius:20px;padding:22px;width:100%;max-width:440px;border:1px solid var(--line2);max-height:92vh;overflow:auto}
 .modal h3{margin:0 0 16px;font-size:17px}
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
 .field label{font-size:12px;color:var(--muted);font-weight:500}
 .seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border-radius:10px;padding:3px;margin-bottom:14px}
 .seg button{border:0;background:transparent;padding:8px;border-radius:8px;cursor:pointer;font-weight:500;color:var(--muted)}
-.seg button.on.e{background:var(--card);color:var(--exp)}
-.seg button.on.i{background:var(--card);color:var(--inc)}
+.seg button.on.e{background:var(--card2);color:var(--exp);box-shadow:inset 0 0 0 1px rgba(255,107,122,.4)}
+.seg button.on.i{background:var(--card2);color:var(--inc);box-shadow:inset 0 0 0 1px rgba(79,209,161,.4)}
+.seg button.on{background:var(--card2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--accent)}
 .mrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .mfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
 .err{color:var(--exp);font-size:13px;min-height:18px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.2s;pointer-events:none;z-index:20}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#16244a;border:1px solid var(--line2);color:var(--ink);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.2s;pointer-events:none;z-index:20;max-width:90vw;text-align:center}
+/* savings goals & debts */
+.sumrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.goals{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.goal .g-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.g-ico{width:46px;height:46px;border-radius:14px;background:var(--accent-soft);display:grid;place-items:center;font-size:24px;flex:none}
+.g-name{flex:1;min-width:0;font-weight:600;font-size:16px;word-break:break-word}
+.g-name .small{font-weight:400;margin-top:2px}
+.g-amt{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.g-amt b{font-size:20px}
+.pct{font-weight:700;color:var(--accent)}
+.bar.big{height:12px}
+.bar.big>i{background:linear-gradient(90deg,var(--navy2),var(--accent))}
+.goal.reached .bar.big>i{background:linear-gradient(90deg,#2a9d76,var(--inc))}
+.goal.reached .pct{color:var(--inc)}
+.g-acts{display:flex;gap:8px;margin-top:14px}
+.g-acts .btn{flex:1}
+.g-hist{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
+.g-hist div{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:3px 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-size:21px;cursor:pointer}
+.chips button.on{border-color:var(--accent);background:var(--accent-soft)}
+.checkrow{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:4px 0 12px;cursor:pointer}
+.checkrow input{width:20px;height:20px;accent-color:var(--accent);margin:1px 0 0;flex:none}
+.debt{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.debt:last-child{border-bottom:0}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:16px;background:var(--accent-soft);color:var(--accent)}
+.debt.gave .av{background:rgba(79,209,161,.12);color:var(--inc)}
+.debt.took .av{background:rgba(255,107,122,.12);color:var(--exp)}
+.debt .t1{font-weight:600}
+.debt .t2{font-size:12px;color:var(--muted)}
+.debt .late{color:var(--exp);font-weight:600}
+.debt .right{text-align:right}
+.debt .right .small{display:block}
+.debt .bar{height:5px;margin-top:6px}
+.debt .bar>i{background:var(--accent)}
+.debt.closed{opacity:.6}
+.debt .acts2{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
+.secttl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:18px 0 4px;font-weight:600}
+.seg3{display:inline-grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:6px}
+.seg3 button{border:0;background:transparent;padding:7px 16px;border-radius:9px;cursor:pointer;color:var(--muted);font-weight:500}
+.seg3 button.on{background:var(--navy);color:#fff}
+.mini-g{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.mini-g:last-child{border-bottom:0}
+.mini-g .bar{flex:1}
 .toast.on{opacity:1}
 svg text{fill:var(--muted);font-size:11px;font-family:Inter,sans-serif}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:6px}
@@ -115,11 +161,14 @@ input[type=date]{-webkit-appearance:none;appearance:none}
   #monthSel{flex:1;max-width:60%}
   input,select,textarea{font-size:16px!important}
   /* bottom tab bar */
-  .tabs{position:fixed;left:0;right:0;bottom:0;width:100%;margin:0;border-radius:0;border:0;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5;display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+  .tabs{position:fixed;left:0;right:0;bottom:0;width:100%;margin:0;border-radius:0;border:0;border-top:1px solid var(--line);background:rgba(5,7,12,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5;display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
   .tab{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font-size:11px}
+  .tab.on{background:var(--accent-soft);color:#fff;box-shadow:none}
+  .sumrow{gap:10px}
+  .goals{grid-template-columns:1fr}
   .ti{display:block;font-size:20px;line-height:1}
   /* floating add button */
-  #addBtn{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:50%;padding:0;font-size:0;z-index:6;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+  #addBtn{position:fixed;right:16px;bottom:calc(78px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:20px;padding:0;font-size:0;z-index:6;box-shadow:0 10px 28px rgba(30,58,138,.6),0 0 0 6px rgba(5,7,12,.6)}
   #addBtn::before{content:"+";font-size:30px;line-height:1;font-weight:400}
   .grid{gap:12px}
   .card{padding:14px}
@@ -149,15 +198,17 @@ input[type=date]{-webkit-appearance:none;appearance:none}
       <span class="status" id="status"><span class="dot"></span><span>Ulanmoqda…</span></span>
       <select id="monthSel" aria-label="Oy"></select>
       <button class="btn hidden" id="installBtn">⬇ O'rnatish</button>
+      <button class="btn iconbtn" id="setBtn" aria-label="Sozlamalar" title="Sozlamalar">⚙️</button>
       <button class="btn primary" id="addBtn">+ Qo'shish</button>
     </div>
   </header>
 
   <nav class="tabs" role="tablist">
     <button class="tab on" data-view="overview"><span class="ti">🏠</span>Umumiy</button>
-    <button class="tab" data-view="transactions"><span class="ti">📋</span>Tranzaksiyalar</button>
-    <button class="tab" data-view="budgets"><span class="ti">🎯</span>Byudjetlar</button>
-    <button class="tab" data-view="settings"><span class="ti">⚙️</span>Sozlamalar</button>
+    <button class="tab" data-view="transactions"><span class="ti">📋</span>Tarix</button>
+    <button class="tab" data-view="budgets"><span class="ti">🎯</span>Byudjet</button>
+    <button class="tab" data-view="savings"><span class="ti">🐷</span>Jamg'arma</button>
+    <button class="tab" data-view="debts"><span class="ti">🤝</span>Qarzlar</button>
   </nav>
 
   <!-- OVERVIEW -->
@@ -188,6 +239,41 @@ input[type=date]{-webkit-appearance:none;appearance:none}
         <div class="row-h"><h2>Shu oydagi byudjetlar</h2><button class="btn sm ghost" data-goto="budgets">Boshqarish →</button></div>
         <div id="budMini"></div>
       </div>
+    </div>
+    <div class="grid two" style="margin-top:16px">
+      <div class="card">
+        <div class="row-h"><h2>🐷 Jamg'arma maqsadlari</h2><button class="btn sm ghost" data-goto="savings">Barchasi →</button></div>
+        <div id="goalMini"></div>
+      </div>
+      <div class="card">
+        <div class="row-h"><h2>🤝 Qarzlar</h2><button class="btn sm ghost" data-goto="debts">Barchasi →</button></div>
+        <div id="debtMini"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAVINGS -->
+  <section id="view-savings" class="hidden">
+    <div class="sumrow">
+      <div class="card kpi"><div class="label">Jami jamg'arildi</div><div class="val num inc" id="sTotal">–</div><div class="sub" id="sTotalSub"></div></div>
+      <div class="card kpi"><div class="label">Maqsadlargacha qoldi</div><div class="val num" id="sLeft">–</div><div class="sub" id="sLeftSub"></div></div>
+    </div>
+    <div class="row-h"><h2 style="font-size:17px">Maqsadlarim</h2><button class="btn primary sm" data-newgoal>+ Yangi maqsad</button></div>
+    <div class="goals" id="goalList"></div>
+  </section>
+
+  <!-- DEBTS -->
+  <section id="view-debts" class="hidden">
+    <div class="sumrow">
+      <div class="card kpi"><div class="label">Sizga qaytarishlari kerak</div><div class="val num inc" id="dOwed">–</div><div class="sub" id="dOwedSub"></div></div>
+      <div class="card kpi"><div class="label">Siz qaytarishingiz kerak</div><div class="val num exp" id="dOwe">–</div><div class="sub" id="dOweSub"></div></div>
+    </div>
+    <div class="card">
+      <div class="row-h">
+        <div class="seg3" id="debtFilter"><button class="on" data-df="open">Ochiq</button><button data-df="closed">Yopilgan</button></div>
+        <button class="btn primary sm" data-newdebt>+ Yangi qarz</button>
+      </div>
+      <div id="debtList"></div>
     </div>
   </section>
 
@@ -246,7 +332,7 @@ input[type=date]{-webkit-appearance:none;appearance:none}
           <label class="btn" style="display:inline-flex;align-items:center">⬆ Zaxiradan tiklash<input type="file" id="bkFile" accept=".json,application/json" hidden></label>
         </div>
         <h2 style="margin-top:22px">Boshidan boshlash</h2>
-        <p class="small" style="margin-top:0">Bu yerda saqlangan barcha tranzaksiya va byudjetlarni o'chirish.</p>
+        <p class="small" style="margin-top:0">Bu yerda saqlangan barcha tranzaksiya, byudjet, jamg'arma va qarzlarni o'chirish.</p>
         <button class="btn" id="wipe" style="color:var(--exp)">Barcha ma'lumotlarni o'chirish…</button>
       </div>
     </div>
@@ -266,6 +352,16 @@ input[type=date]{-webkit-appearance:none;appearance:none}
     <div class="field"><label for="fNote">Izoh (ixtiyoriy)</label><input type="text" id="fNote" placeholder="masalan, Korzinkadan oziq-ovqat"></div>
     <div class="err" id="fErr"></div>
     <div class="mfoot"><button type="button" class="btn ghost hidden" id="delTx" style="color:var(--exp);margin-right:auto">O'chirish</button><button type="button" class="btn ghost" id="cancelTx">Bekor qilish</button><button class="btn primary" type="submit">Saqlash</button></div>
+  </form>
+</div>
+
+<!-- Generic form modal (goals, deposits, debts, payments) -->
+<div class="scrim" id="genModal">
+  <form class="modal" id="genForm" autocomplete="off">
+    <h3 id="gTitle"></h3>
+    <div id="gBody"></div>
+    <div class="err" id="gErr"></div>
+    <div class="mfoot"><button type="button" class="btn ghost hidden" id="gDel" style="color:var(--exp);margin-right:auto">O'chirish</button><button type="button" class="btn ghost" id="gCancel">Bekor qilish</button><button class="btn primary" type="submit" id="gSave">Saqlash</button></div>
   </form>
 </div>
 
@@ -297,7 +393,7 @@ const DEFAULT_CATS = [
 const LEGACY = {"Food & groceries":"Oziq-ovqat","Eating out":"Kafe va restoranlar","Housing & rent":"Uy-joy va ijara","Utilities":"Kommunal xizmatlar","Phone & internet":"Telefon va internet","Health":"Sog'liq","Shopping":"Xaridlar","Entertainment":"Ko'ngilochar","Education":"Ta'lim","Gifts & family":"Sovg'alar va oila","Other expense":"Boshqa xarajat","Salary":"Maosh","Freelance":"Frilans","Gifts received":"Olingan sovg'alar","Other income":"Boshqa daromad"};
 const LOC = "uz-Latn";
 const TYPE_UZ = {expense:"xarajat", income:"daromad"};
-const settingsDefault = () => ({currency:"UZS", categories: DEFAULT_CATS.slice(), budgets:{}});
+const settingsDefault = () => ({currency:"UZS", categories: DEFAULT_CATS.slice(), budgets:{}, goals:[], debts:[]});
 
 /* ---------- state ---------- */
 let txs = [];               // {id,type,amount,category,date,note,created}
@@ -403,12 +499,17 @@ function monthsBack(k,n){ const [y,m]=k.split("-").map(Number); const out=[]; fo
 
 /* ---------- render ---------- */
 function render(){
+  if(!Array.isArray(settings.goals)) settings.goals = [];
+  if(!Array.isArray(settings.debts)) settings.debts = [];
   renderMonthSel();
   const monthTx = txs.filter(t=>inMonth(t,curMonth));
   const all = sums(txs), mon = sums(monthTx);
   const prevK = monthsBack(curMonth,2)[0], prev = sums(txs.filter(t=>inMonth(t,prevK)));
-  $("#kBal").textContent = money(all.i-all.e);
-  $("#kBal").className = "val num "+(all.i-all.e<0?"exp":"");
+  const bal = all.i-all.e + goalsCash() + debtsCash();
+  $("#kBal").textContent = money(bal);
+  $("#kBal").className = "val num "+(bal<0?"exp":"");
+  const saved = settings.goals.reduce((s,g)=>s+goalSaved(g),0);
+  $("#kBal").nextElementSibling.textContent = settings.goals.length ? "Qo'lingizda · jamg'armada yana "+money(saved) : settings.debts.length ? "Qarzlar hisobga olingan" : "Butun davr";
   $("#kInc").textContent = money(mon.i);
   $("#kExp").textContent = money(mon.e);
   const sav = mon.i-mon.e;
@@ -418,7 +519,196 @@ function render(){
   $("#kIncSub").textContent = delta(mon.i,prev.i,monthLabel(prevK,true)+" oyiga nisbatan");
   $("#kExpSub").textContent = delta(mon.e,prev.e,monthLabel(prevK,true)+" oyiga nisbatan");
   renderTrend(); renderCats(monthTx); renderRecent(); renderBudgets(monthTx); renderTxList(); renderBudgetEditor(monthTx); renderSettings();
+  renderSavings(); renderDebts(); renderMinis();
 }
+
+/* ---------- savings goals ---------- */
+// goal: {id,name,icon,target,deadline,deps:[{id,amount,date,note,fromBal}],created}
+// deps with negative amount = money taken out of the goal
+const GOAL_ICONS = ["💰","🏠","🚗","✈️","📱","💻","💍","🎓","🏥","🎁","🕌","👶"];
+const goalSaved = g => (g.deps||[]).reduce((s,d)=>s+ +d.amount,0);
+function goalsCash(){ let c=0; for(const g of settings.goals) for(const d of (g.deps||[])) if(d.fromBal!==false) c -= +d.amount; return c; }
+function monthsUntil(ds){ const [y,m,d]=ds.split("-").map(Number); const now=new Date(); const n=(y-now.getFullYear())*12+(m-1-now.getMonth())+(d>=now.getDate()?0:-1); return n; }
+function longDate(ds){ const [y,m,d]=ds.split("-").map(Number); return d+"-"+MONTHS[m-1].toLowerCase()+(y!==new Date().getFullYear()?" "+y:""); }
+function goalCard(g){
+  const s=goalSaved(g), t=+g.target||0, p=t?Math.min(s/t,1):0, left=Math.max(t-s,0), reached=t>0&&s>=t;
+  let sub="";
+  if(reached) sub="🎉 Maqsadga erishildi!";
+  else if(g.deadline){
+    const n=monthsUntil(g.deadline);
+    sub = "Muddat: "+longDate(g.deadline) + (n>=1 ? " · oyiga ~"+money(Math.ceil(left/n)) : n===0 ? " · shu oy ichida "+money(left) : " · muddat o'tdi");
+  } else sub = left ? money(left)+" qoldi" : "";
+  const hist=(g.deps||[]).slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.created||0)-(a.created||0)).slice(0,3);
+  return `<div class="card goal${reached?" reached":""}">
+    <div class="g-top"><div class="g-ico">${g.icon||"💰"}</div><div class="g-name">${esc(g.name)}<div class="small">${esc(sub)}</div></div><button class="btn sm ghost" data-gedit="${g.id}" aria-label="Tahrirlash">✎</button></div>
+    <div class="g-amt"><span><b class="num">${money(s)}</b> <span class="small num">/ ${money(t)}</span></span><span class="pct num">${Math.round(p*100)}%</span></div>
+    <div class="bar big"><i style="width:${p*100}%"></i></div>
+    <div class="g-acts"><button class="btn primary sm" data-gdep="${g.id}">+ Pul qo'shish</button><button class="btn sm" data-gwd="${g.id}" ${s>0?"":"disabled"}>− Olish</button></div>
+    ${hist.length?`<div class="g-hist">${hist.map(d=>`<div><span>${dayLabel(d.date)}${d.note?" · "+esc(d.note):""}</span><span class="num ${+d.amount<0?"exp":"inc"}">${+d.amount<0?"−":"+"}${money(Math.abs(+d.amount))}</span></div>`).join("")}</div>`:""}
+  </div>`;
+}
+function renderSavings(){
+  const gs=settings.goals;
+  const saved=gs.reduce((s,g)=>s+goalSaved(g),0), target=gs.reduce((s,g)=>s+(+g.target||0),0);
+  const left=gs.reduce((s,g)=>s+Math.max((+g.target||0)-goalSaved(g),0),0);
+  $("#sTotal").textContent=money(saved);
+  $("#sTotalSub").textContent=gs.length?gs.length+" ta maqsad":"Hali maqsad yo'q";
+  $("#sLeft").textContent=money(left);
+  $("#sLeftSub").textContent=target?Math.round(Math.min(saved/target,1)*100)+"% bajarildi":"";
+  $("#goalList").innerHTML = gs.length ? gs.slice().sort((a,b)=>(goalSaved(a)>=+a.target)-(goalSaved(b)>=+b.target)||(a.created||0)-(b.created||0)).map(goalCard).join("")
+    : `<div class="card empty">Hali jamg'arma maqsadi yo'q.<br>Masalan: uy, mashina, sayohat yoki "qora kun" uchun.<br><br><button class="btn primary" data-newgoal>+ Birinchi maqsadni qo'shish</button></div>`;
+}
+
+/* ---------- debts ---------- */
+// debt: {id,dir:"gave"|"took",person,amount,date,due,note,affects,pays:[{id,amount,date}],created}
+let debtFilter="open";
+const debtPaid = d => (d.pays||[]).reduce((s,p)=>s+ +p.amount,0);
+const debtLeft = d => Math.max((+d.amount||0)-debtPaid(d),0);
+function debtsCash(){ let c=0; for(const d of settings.debts){ if(d.affects===false) continue; const paid=debtPaid(d); c += d.dir==="gave" ? -(+d.amount)+paid : (+d.amount)-paid; } return c; }
+function debtRow(d){
+  const left=debtLeft(d), paid=debtPaid(d), closed=left<=0, p=+d.amount?paid/(+d.amount):0;
+  const late=!closed && d.due && d.due<todayStr();
+  const bits=[(d.dir==="gave"?"Berilgan: ":"Olingan: ")+dayLabel(d.date)];
+  if(d.due && !closed) bits.push(`<span class="${late?"late":""}">Qaytarish: ${dayLabel(d.due)}${late?" (o'tdi)":""}</span>`);
+  if(d.note) bits.push(esc(d.note));
+  return `<div class="debt ${d.dir}${closed?" closed":""}" data-debt="${d.id}">
+    <div class="av">${esc((d.person||"?").trim().charAt(0).toUpperCase())}</div>
+    <div style="min-width:0"><div class="t1">${esc(d.person)}</div><div class="t2">${bits.join(" · ")}</div>
+      ${paid>0&&!closed?`<div class="bar"><i style="width:${p*100}%"></i></div>`:""}</div>
+    <div class="right"><div class="num ${d.dir==="gave"?"inc":"exp"}" style="font-weight:700">${closed?"✓ "+money(+d.amount):money(left)}</div>
+      <span class="small">${closed?"qaytarildi":paid>0?money(+d.amount)+" dan":""}</span>
+      ${closed?"":`<div class="acts2"><button class="btn sm" data-dpay="${d.id}">To'lov</button><button class="btn sm" data-dclose="${d.id}" title="To'liq qaytarildi">✓</button></div>`}</div>
+  </div>`;
+}
+function renderDebts(){
+  const ds=settings.debts, open=ds.filter(d=>debtLeft(d)>0);
+  const owed=open.filter(d=>d.dir==="gave"), owe=open.filter(d=>d.dir==="took");
+  $("#dOwed").textContent=money(owed.reduce((s,d)=>s+debtLeft(d),0));
+  $("#dOwedSub").textContent=owed.length?owed.length+" kishi":"Hech kim qarzdor emas";
+  $("#dOwe").textContent=money(owe.reduce((s,d)=>s+debtLeft(d),0));
+  $("#dOweSub").textContent=owe.length?owe.length+" ta qarz":"Qarzingiz yo'q";
+  document.querySelectorAll("#debtFilter button").forEach(b=>b.classList.toggle("on",b.dataset.df===debtFilter));
+  const list=ds.filter(d=>debtFilter==="open"?debtLeft(d)>0:debtLeft(d)<=0);
+  const sort=(a,b)=>(a.due||"9999").localeCompare(b.due||"9999")||(b.date||"").localeCompare(a.date||"");
+  const gave=list.filter(d=>d.dir==="gave").sort(sort), took=list.filter(d=>d.dir==="took").sort(sort);
+  let h="";
+  if(gave.length) h+=`<div class="secttl">Menga qarzdorlar</div>`+gave.map(debtRow).join("");
+  if(took.length) h+=`<div class="secttl">Mening qarzlarim</div>`+took.map(debtRow).join("");
+  $("#debtList").innerHTML = h || `<div class="empty">${debtFilter==="open"?"Ochiq qarz yo'q.<br><br><button class=\"btn primary\" data-newdebt>+ Qarz qo'shish</button>":"Yopilgan qarzlar shu yerda chiqadi."}</div>`;
+}
+function renderMinis(){
+  const gs=settings.goals;
+  $("#goalMini").innerHTML = gs.length ? gs.slice(0,4).map(g=>{ const s=goalSaved(g), t=+g.target||0, p=t?Math.min(s/t,1):0;
+    return `<div class="mini-g"><span style="font-size:20px">${g.icon||"💰"}</span><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:8px;font-size:13.5px"><span>${esc(g.name)}</span><span class="num small">${Math.round(p*100)}%</span></div><div class="bar" style="margin-top:5px"><i style="width:${p*100}%"></i></div></div></div>`; }).join("")
+    : `<div class="empty">Maqsad qo'yilmagan.<br><br><button class="btn" data-newgoal>+ Maqsad qo'shish</button></div>`;
+  const open=settings.debts.filter(d=>debtLeft(d)>0);
+  const owed=open.filter(d=>d.dir==="gave").reduce((s,d)=>s+debtLeft(d),0), owe=open.filter(d=>d.dir==="took").reduce((s,d)=>s+debtLeft(d),0);
+  $("#debtMini").innerHTML = open.length ? `<div class="sumrow" style="margin:0 0 6px"><div><div class="small">Sizga qaytariladi</div><div class="num inc" style="font-weight:700;font-size:17px">${money(owed)}</div></div><div><div class="small">Siz qaytarasiz</div><div class="num exp" style="font-weight:700;font-size:17px">${money(owe)}</div></div></div>`
+      + open.slice().sort((a,b)=>(a.due||"9999").localeCompare(b.due||"9999")).slice(0,3).map(debtRow).join("")
+    : `<div class="empty">Ochiq qarz yo'q.</div>`;
+}
+
+/* ---------- generic form modal ---------- */
+let gSubmit=null, gDelete=null;
+function openForm(title, fields, onSave, onDelete, saveLabel){
+  $("#gTitle").textContent=title;
+  $("#gBody").innerHTML = fields.map(f=>{
+    if(f.type==="seg") return `<div class="seg" data-gseg="${f.k}">${f.options.map(([v,l,c])=>`<button type="button" class="${c||""}${v===f.value?" on":""}" data-sv="${v}">${l}</button>`).join("")}</div>`;
+    if(f.type==="icons") return `<div class="field"><label>${f.label}</label><div class="chips" data-gicons="${f.k}">${GOAL_ICONS.map(i=>`<button type="button" class="${i===f.value?"on":""}" data-iv="${i}">${i}</button>`).join("")}</div></div>`;
+    if(f.type==="check") return `<label class="checkrow"><input type="checkbox" data-gk="${f.k}" ${f.value?"checked":""}><span>${f.label}${f.hint?`<br><span class="small">${f.hint}</span>`:""}</span></label>`;
+    const attrs = f.type==="number" ? `type="number" inputmode="decimal" step="any" min="0"` : `type="${f.type}"`;
+    return `<div class="field"><label>${f.label}</label><input ${attrs} data-gk="${f.k}" value="${esc(f.value??"")}" placeholder="${esc(f.ph||"")}" ${f.max?`maxlength="${f.max}"`:""}></div>`;
+  }).join("");
+  $("#gErr").textContent=""; $("#gSave").textContent=saveLabel||"Saqlash";
+  $("#gDel").classList.toggle("hidden",!onDelete);
+  gSubmit=onSave; gDelete=onDelete;
+  $("#genModal").classList.add("on");
+  setTimeout(()=>{ const i=$("#gBody input[type=text],#gBody input[type=number]"); if(i) i.focus(); },40);
+}
+function closeForm(){ $("#genModal").classList.remove("on"); gSubmit=gDelete=null; }
+function formVals(){
+  const v={};
+  document.querySelectorAll("#gBody [data-gk]").forEach(i=>v[i.dataset.gk]= i.type==="checkbox"?i.checked : i.type==="number"?parseFloat(i.value):i.value.trim());
+  document.querySelectorAll("#gBody [data-gseg]").forEach(s=>{ const b=s.querySelector(".on"); v[s.dataset.gseg]=b?b.dataset.sv:""; });
+  document.querySelectorAll("#gBody [data-gicons]").forEach(s=>{ const b=s.querySelector(".on"); v[s.dataset.gicons]=b?b.dataset.iv:"💰"; });
+  return v;
+}
+$("#gBody").addEventListener("click",e=>{
+  const sb=e.target.closest("[data-sv]"); if(sb){ sb.parentElement.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b===sb)); return; }
+  const ib=e.target.closest("[data-iv]"); if(ib){ ib.parentElement.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b===ib)); }
+});
+$("#genForm").addEventListener("submit",e=>{ e.preventDefault(); if(!gSubmit) return; const err=gSubmit(formVals()); if(err){ $("#gErr").textContent=err; return; } closeForm(); saveSettings(); });
+$("#gCancel").onclick=closeForm;
+$("#gDel").onclick=()=>{ const fn=gDelete; closeForm(); fn&&fn(); };
+$("#genModal").addEventListener("click",e=>{ if(e.target.id==="genModal") closeForm(); });
+
+const r2 = n => Math.round(n*100)/100;
+function goalForm(g){
+  openForm(g?"Maqsadni tahrirlash":"Yangi jamg'arma maqsadi", [
+    {k:"icon",type:"icons",label:"Belgi",value:g?.icon||"💰"},
+    {k:"name",type:"text",label:"Maqsad nomi",value:g?.name||"",ph:"masalan, Mashina uchun",max:60},
+    {k:"target",type:"number",label:"Kerakli summa",value:g?.target??"",ph:"0"},
+    {k:"deadline",type:"date",label:"Qachongacha (ixtiyoriy)",value:g?.deadline||""},
+    ...(g?[]:[{k:"start",type:"number",label:"Hozir yig'ilgan summa (ixtiyoriy)",value:"",ph:"0"}])
+  ], v=>{
+    if(!v.name) return "Maqsad nomini yozing.";
+    if(!(v.target>0)) return "Kerakli summani kiriting.";
+    if(g){ Object.assign(g,{name:v.name.slice(0,60),icon:v.icon,target:r2(v.target),deadline:v.deadline}); toast("Saqlandi"); }
+    else {
+      const ng={id:uid(),name:v.name.slice(0,60),icon:v.icon,target:r2(v.target),deadline:v.deadline,deps:[],created:Date.now()};
+      if(v.start>0) ng.deps.push({id:uid(),amount:r2(v.start),date:todayStr(),note:"Boshlang'ich summa",fromBal:false,created:Date.now()});
+      settings.goals.push(ng); toast("Maqsad qo'shildi 🐷");
+    }
+  }, g?()=>confirmBox("Bu maqsad o'chirilsinmi?",`${g.name} — yig'ilgan ${money(goalSaved(g))}. Hamyon balansidan olingan pullar balansga qaytadi.`,()=>{ settings.goals=settings.goals.filter(x=>x.id!==g.id); saveSettings(); toast("O'chirildi"); }):null);
+}
+function depositForm(g, out){
+  const s=goalSaved(g);
+  openForm(out?`${g.icon} ${g.name}: pul olish`:`${g.icon} ${g.name}: pul qo'shish`, [
+    {k:"amount",type:"number",label:out?`Summa (jamg'armada ${money(s)} bor)`:"Summa",value:"",ph:"0"},
+    {k:"date",type:"date",label:"Sana",value:todayStr()},
+    {k:"note",type:"text",label:"Izoh (ixtiyoriy)",value:"",max:80},
+    {k:"fromBal",type:"check",label:out?"Pul hamyon balansiga qaytsin":"Hamyon balansidan olinsin",value:true,
+      hint:out?"Belgilanmasa, faqat jamg'armadan ayriladi.":"Belgilanmasa, faqat jamg'armaga qo'shiladi (masalan, pul allaqachon boshqa joyda turgan bo'lsa)."}
+  ], v=>{
+    if(!(v.amount>0)) return "Noldan katta summa kiriting.";
+    if(out && v.amount>s+1e-9) return "Jamg'armada buncha pul yo'q.";
+    if(!v.date) return "Sanani tanlang.";
+    g.deps=g.deps||[]; g.deps.push({id:uid(),amount:out?-r2(v.amount):r2(v.amount),date:v.date,note:v.note.slice(0,80),fromBal:v.fromBal,created:Date.now()});
+    const nowS=goalSaved(g);
+    toast(!out && nowS>=+g.target && s<+g.target ? "🎉 Tabriklaymiz! Maqsadga erishdingiz!" : out?"Jamg'armadan olindi":"Jamg'armaga qo'shildi");
+  }, null, out?"Olish":"Qo'shish");
+}
+function debtForm(d){
+  openForm(d?"Qarzni tahrirlash":"Yangi qarz", [
+    {k:"dir",type:"seg",value:d?.dir||"gave",options:[["gave","Men qarz berdim","i"],["took","Men qarz oldim","e"]]},
+    {k:"person",type:"text",label:"Kim",value:d?.person||"",ph:"Ism",max:50},
+    {k:"amount",type:"number",label:"Summa",value:d?.amount??"",ph:"0"},
+    {k:"date",type:"date",label:"Qachon",value:d?.date||todayStr()},
+    {k:"due",type:"date",label:"Qaytarish muddati (ixtiyoriy)",value:d?.due||""},
+    {k:"note",type:"text",label:"Izoh (ixtiyoriy)",value:d?.note||"",max:80},
+    {k:"affects",type:"check",label:"Hamyon balansida hisobga olinsin",value:d?d.affects!==false:true,hint:"Berilgan qarz balansdan ayriladi, olingan qarz qo'shiladi. Qaytarilganda aksincha."}
+  ], v=>{
+    if(!v.person) return "Kimligini yozing.";
+    if(!(v.amount>0)) return "Noldan katta summa kiriting.";
+    if(!v.date) return "Sanani tanlang.";
+    const vals={dir:v.dir,person:v.person.slice(0,50),amount:r2(v.amount),date:v.date,due:v.due,note:v.note.slice(0,80),affects:v.affects};
+    if(d){ Object.assign(d,vals); toast("Saqlandi"); }
+    else { settings.debts.push({id:uid(),...vals,pays:[],created:Date.now()}); debtFilter="open"; toast("Qarz yozib qo'yildi"); }
+  }, d?()=>confirmBox("Bu qarz o'chirilsinmi?",`${d.person} — ${money(+d.amount)}`,()=>{ settings.debts=settings.debts.filter(x=>x.id!==d.id); saveSettings(); toast("O'chirildi"); }):null);
+}
+function payForm(d){
+  const left=debtLeft(d);
+  openForm(d.dir==="gave"?`${d.person} pul qaytardi`:`${d.person}ga pul qaytardim`, [
+    {k:"amount",type:"number",label:`Summa (qolgan: ${money(left)})`,value:left,ph:"0"},
+    {k:"date",type:"date",label:"Sana",value:todayStr()}
+  ], v=>{
+    if(!(v.amount>0)) return "Noldan katta summa kiriting.";
+    if(v.amount>left+1e-9) return "Qolgan qarzdan ko'p bo'lishi mumkin emas.";
+    d.pays=d.pays||[]; d.pays.push({id:uid(),amount:r2(v.amount),date:v.date||todayStr(),created:Date.now()});
+    toast(debtLeft(d)<=0?"✓ Qarz to'liq yopildi":"To'lov yozildi");
+  }, null, "Yozish");
+}
+const findGoal=id=>settings.goals.find(g=>g.id===id), findDebt=id=>settings.debts.find(d=>d.id===id);
 function delta(a,b,suffix){ if(!b) return a?"Ma'lumotli birinchi oy":"Hozircha yo'q"; const p=Math.round((a-b)/b*100); return (p>0?"▲ ":p<0?"▼ ":"")+Math.abs(p)+"% "+suffix; }
 
 function renderMonthSel(){
@@ -518,7 +808,7 @@ function renderSettings(){
 /* ---------- modal ---------- */
 function setFormType(t){
   formType=t;
-  document.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+  document.querySelectorAll("#txForm .seg button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
   const sel=$("#fCatIn"), cur=sel.value;
   sel.innerHTML=settings.categories.filter(c=>c.type===t).map(c=>`<option>${esc(c.name)}</option>`).join("");
   if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
@@ -535,27 +825,60 @@ function openTx(t){
 }
 function closeTx(){ $("#txModal").classList.remove("on"); }
 let confirmCb=null;
-function confirmBox(title,body,cb){ $("#cTitle").textContent=title; $("#cBody").textContent=body; confirmCb=cb; $("#confirmModal").classList.add("on"); }
+function confirmBox(title,body,cb,yesLabel){
+  $("#cTitle").textContent=title; $("#cBody").textContent=body; confirmCb=cb;
+  $("#cYes").textContent=yesLabel||"O'chirish";
+  $("#cYes").style.background = yesLabel ? "" : "var(--exp)"; $("#cYes").style.borderColor = yesLabel ? "" : "var(--exp)";
+  $("#confirmModal").classList.add("on");
+}
 
 /* ---------- events ---------- */
 document.addEventListener("click",e=>{
   const b=e.target.closest("button");
-  if(!b){ const r=e.target.closest("[data-row]"); if(r) openTx(txs.find(t=>t.id===r.dataset.row)); return; }
+  if(!b){
+    const r=e.target.closest("[data-row]"); if(r) return openTx(txs.find(t=>t.id===r.dataset.row));
+    const dr=e.target.closest("[data-debt]"); if(dr){ const d=findDebt(dr.dataset.debt); if(d) debtForm(d); }
+    return;
+  }
+  if(b.closest("#gBody")) return;
   if(b.matches(".tab")) return go(b.dataset.view);
   if(b.dataset.goto) return go(b.dataset.goto);
-  if(b.hasAttribute("data-add")||b.id==="addBtn") return openTx();
+  if(b.id==="setBtn") return go("settings");
+  if(b.id==="addBtn"){ if(view==="savings") return goalForm(); if(view==="debts") return debtForm(); return openTx(); }
+  if(b.hasAttribute("data-add")) return openTx();
+  if(b.hasAttribute("data-newgoal")) return goalForm();
+  if(b.hasAttribute("data-newdebt")) return debtForm();
+  if(b.dataset.gedit){ const g=findGoal(b.dataset.gedit); return g&&goalForm(g); }
+  if(b.dataset.gdep){ const g=findGoal(b.dataset.gdep); return g&&depositForm(g,false); }
+  if(b.dataset.gwd){ const g=findGoal(b.dataset.gwd); return g&&depositForm(g,true); }
+  if(b.dataset.df){ debtFilter=b.dataset.df; return renderDebts(); }
+  if(b.dataset.dpay){ const d=findDebt(b.dataset.dpay); return d&&payForm(d); }
+  if(b.dataset.dclose){
+    const d=findDebt(b.dataset.dclose); if(!d) return;
+    const left=debtLeft(d);
+    return confirmBox("Qarz to'liq qaytarildimi?",`${d.person} — ${money(left)} ${d.dir==="gave"?"sizga qaytarildi":"siz qaytardingiz"}.`,()=>{
+      d.pays=d.pays||[]; d.pays.push({id:uid(),amount:left,date:todayStr(),created:Date.now()}); saveSettings(); toast("✓ Qarz yopildi");
+    }, "Ha, yopildi");
+  }
   if(b.dataset.edit) return openTx(txs.find(t=>t.id===b.dataset.edit));
   if(b.dataset.del){ const t=txs.find(x=>x.id===b.dataset.del); return confirmBox("Bu tranzaksiya o'chirilsinmi?",`${t.note||t.category} — ${money(+t.amount)}`,()=>{deleteTx(t.id);toast("O'chirildi");}); }
   if(b.dataset.t) return setFormType(b.dataset.t);
   if(b.dataset.rmcat!==undefined){ const c=settings.categories[+b.dataset.rmcat]; settings.categories.splice(+b.dataset.rmcat,1); delete settings.budgets[c.name]; saveSettings(); return; }
 });
-function go(v){ view=v; document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.view===v)); ["overview","transactions","budgets","settings"].forEach(k=>$("#view-"+k).classList.toggle("hidden",k!==v)); window.scrollTo({top:0}); }
+function go(v){
+  view=v;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.view===v));
+  ["overview","transactions","budgets","savings","debts","settings"].forEach(k=>$("#view-"+k).classList.toggle("hidden",k!==v));
+  $("#addBtn").textContent = v==="savings" ? "+ Yangi maqsad" : v==="debts" ? "+ Yangi qarz" : "+ Qo'shish";
+  $("#monthSel").style.visibility = (v==="savings"||v==="debts"||v==="settings") ? "hidden" : "";
+  window.scrollTo({top:0});
+}
 $("#cancelTx").onclick=closeTx;
 $("#delTx").onclick=()=>{ const t=txs.find(x=>x.id===editId); if(!t) return; closeTx(); confirmBox("Bu tranzaksiya o'chirilsinmi?",`${t.note||t.category} — ${money(+t.amount)}`,()=>{deleteTx(t.id);toast("O'chirildi");}); };
 $("#txModal").addEventListener("click",e=>{ if(e.target.id==="txModal") closeTx(); });
 $("#cNo").onclick=()=>$("#confirmModal").classList.remove("on");
 $("#cYes").onclick=()=>{ $("#confirmModal").classList.remove("on"); confirmCb&&confirmCb(); };
-document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ closeTx(); $("#confirmModal").classList.remove("on"); } });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ closeTx(); closeForm(); $("#confirmModal").classList.remove("on"); } });
 
 $("#txForm").addEventListener("submit",async e=>{
   e.preventDefault();
@@ -589,7 +912,7 @@ $("#copyCsv").onclick=async()=>{
   const box=$("#csvBox"); box.value=csv; box.classList.remove("hidden");
   try{ await navigator.clipboard.writeText(csv); toast("CSV nusxalandi"); }catch(e){ box.select(); toast("Quyidagi matnni belgilab, nusxalang"); }
 };
-$("#wipe").onclick=()=>confirmBox("Barcha ma'lumotlar o'chirilsinmi?","Barcha tranzaksiyalar, byudjetlar va qo'shilgan kategoriyalar o'chiriladi. Buni qaytarib bo'lmaydi.",async()=>{
+$("#wipe").onclick=()=>confirmBox("Barcha ma'lumotlar o'chirilsinmi?","Barcha tranzaksiyalar, byudjetlar, jamg'armalar, qarzlar va qo'shilgan kategoriyalar o'chiriladi. Buni qaytarib bo'lmaydi.",async()=>{
   if(store){ for(const t of txs.slice()){ try{ await store.doc(t.id).delete(); }catch(e){} } settings=settingsDefault(); saveSettings(); }
   else { txs=[]; settings=settingsDefault(); localSave(); render(); }
   toast("Barcha ma'lumotlar o'chirildi");
